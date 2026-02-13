@@ -13,7 +13,25 @@ spec:
         app: {{ .Release.Name }}
     spec:
       containers:
-      - name: app
-        image: nginx
-        ports:
-        - containerPort: 80
+        - name: app
+          image: nginx
+          ports:
+          - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          livenessprobe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+            initialDelaySeconds: 2
+            periodSeconds: 5
